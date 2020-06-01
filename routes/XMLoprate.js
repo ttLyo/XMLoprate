@@ -65,7 +65,7 @@ router.put('/:id', function(req, res) {
     }
     
   }catch(e){
-    res.end(e+"")
+    res.end({code:500,msg:e+""})
   }
 });
 
@@ -74,23 +74,13 @@ router.delete('/:id', function(req, res) {
   try{
     let {id} = req.params
     id = mongoose.Types.ObjectId(id)
-    if(req.body.name&&req.body.content){
-      parser.parseStringPromise(req.body.content)
-      .then((val,err)=>{
-        model.findByIdAndRemove(id).then(val=>{
-          // console.log(val)
-          res.end(JSON.stringify({code:200,msg:"ok"}))
-        })
-      }).catch(e=>{
-        res.end(JSON.stringify({code:400,msg:"content should be xml"}))
-      })
-          
-    }else{
-      res.end(JSON.stringify({code:400,msg:"no name"}))
-    }
+    model.findByIdAndRemove(id).then(val=>{
+	  // console.log(val)
+	  res.end(JSON.stringify({code:200,msg:"ok"}))
+	})
     
   }catch(e){
-    res.end(e+"")
+    res.end({code:500,msg:e+""})
   }
 });
 
